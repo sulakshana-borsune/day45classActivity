@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+<p>
+    <label for="input"> Text</label>
+    <input id="text"> 
+</p>
+<p>
+    <button> Submit</button>
+</p>
+    </form>
+   <script>
+const request = indexedDB.open('movieDB', 1)
+ 
+
+ request.onupgradeneeded = event => {
+     const db = event.target.result
+     const objectStore = db.createObjectStore('favmovie', {keyPath: 'id'})
+     objectStore.createIndex('favmovie', 'favmovie')
+ }
+
+ request.onsuccess = event => {
+     console.log('connection successful')
+
+     const db = event.target.result
+     const transaction = db.transaction(['favmovie'], 'readwrite')
+     const store = transaction.objectStore('favmovie')
+     store.add({id: 1, favmovie:'starwars'})
+     store.add({id: 2, favmovie:'avengers'})
+     store.add({id: 1, favmovie:'lionking'})
+     store.add({id: 1, favmovie:'kung fu panda'})
+
+     request.onerror = event => {
+         console.log('db error')
+     }
+
+
+
+
+ }
+   </script>
+    
+
+</body>
+</html>
